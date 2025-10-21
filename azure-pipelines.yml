@@ -21,5 +21,5 @@ steps:
 
 # Step 3: Run Python script to load CSV into Azure SQL
 - script: |
-    python load_csv_to_sql.py
+    python load_csv.py
   displayName: 'Load CSV into Azure SQL Database'
