@@ -4,16 +4,22 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# Step 1: Checkout your repo
+- checkout: self 
 
+# Step 2: Install Python dependencies
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    python -m pip install --upgrade pip
+    pip install pandas sqlalchemy pyodbc
+  displayName: 'Install Python Packages'
+
+# Step 3: Run Python script to load CSV into Azure SQL
+- script: |
+    python load_csv_to_sql.py
+  displayName: 'Load CSV into Azure SQL Database'
