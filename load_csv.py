@@ -8,7 +8,7 @@ database = os.environ['AZURE_SQL_DATABASE']
 username = os.environ['AZURE_SQL_USER']
 password = os.environ['AZURE_SQL_PASSWORD']
 
-connection_url = f"mssql+pyodbc://{username}:{password}@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server"
+conn_str = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
 engine = create_engine(connection_url)
 
 # --- Load CSVs into SQL tables ---
