@@ -4,7 +4,7 @@ trigger:
       - master
 
 pool:
-  vmImage: 'windows-2002'
+  vmImage: 'ubuntu-latest'
 
 steps:
 # Step 1: Checkout repo
@@ -16,6 +16,16 @@ steps:
     versionSpec: '3.x'
     addToPath: true
 
+- script: |
+    # Add Microsoft repo keys
+    curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+    curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+
+    # Update packages and install ODBC driver
+    sudo apt-get update
+    sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
+  displayName: 'Install ODBC Driver 17 for SQL Server'
+  
 - script: |
     python -m pip install --upgrade pip
     pip install pandas sqlalchemy pyodbc
