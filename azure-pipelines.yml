@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Step 1: Checkout your repo
+- checkout: self 
+
+# Step 2: Install Python dependencies
+- script: |
+    python -m pip install --upgrade pip
+    pip install pandas sqlalchemy pyodbc
+  displayName: 'Install Python Packages'
+
+# Step 3: Run Python script to load CSV into Azure SQL
+- script: |
+    python load_csv_to_sql.py
+  displayName: 'Load CSV into Azure SQL Database'
