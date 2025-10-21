@@ -1,21 +1,27 @@
 trigger:
   branches:
     include:
-      - master
+      - master  # pipeline triggers on master commits
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest'  # Linux agent, shorter queue times
 
 steps:
-# Step 1: Checkout repo
+# Step 1: Checkout code
 - checkout: self
 
-# Step 2: Install Python 3 and dependencies
+# Step 2: Install Python and dependencies
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.x'
     addToPath: true
 
+- script: |
+    python -m pip install --upgrade pip
+    pip install pandas sqlalchemy pyodbc
+  displayName: 'Install Python Packages'
+
+# Step 3: Install ODBC Driver 17 for SQL Server
 - script: |
     # Add Microsoft repo keys
     curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
@@ -25,13 +31,8 @@ steps:
     sudo apt-get update
     sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
   displayName: 'Install ODBC Driver 17 for SQL Server'
-  
-- script: |
-    python -m pip install --upgrade pip
-    pip install pandas sqlalchemy pyodbc
-  displayName: 'Install Python Packages'
 
-# Step 3: Run Python script to load CSVs into SQL
+# Step 4: Run Python script to load CSVs
 - script: |
     python load_csv.py
   displayName: 'Load CSVs into Azure SQL Database'
