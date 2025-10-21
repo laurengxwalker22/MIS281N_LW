@@ -3,10 +3,10 @@ from sqlalchemy import create_engine
 import os
 
 # --- Azure SQL Connection ---
-server = os.environ['assignment8.database.windows.net']      # e.g., yourserver.database.windows.net
-database = os.environ['assignment_8']  # e.g., ConsumerEdgeDB
-username = os.environ['lgw558']
-password = os.environ['January9!']
+server = os.environ['AZURE_SERVER']      # e.g., yourserver.database.windows.net
+database = os.environ['AZURE_SQL_DATABASE']  # e.g., ConsumerEdgeDB
+username = os.environ['AZURE_USER']
+password = os.environ['AZURE_PASSWORD']
 
 connection_url = f"mssql+pyodbc://{username}:{password}@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server"
 engine = create_engine(connection_url)
