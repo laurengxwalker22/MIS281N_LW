@@ -9,7 +9,7 @@ username = os.environ['AZURE_SQL_USER']
 password = os.environ['AZURE_SQL_PASSWORD']
 
 conn_str = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
-engine = create_engine(connection_url)
+engine = create_engine(conn_str)
 
 # --- Load CSVs into SQL tables ---
 csv_files = {
