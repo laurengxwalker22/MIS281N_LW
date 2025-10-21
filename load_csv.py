@@ -1,14 +1,21 @@
 import os
 import pandas as pd
 from sqlalchemy import create_engine
+import urllib
 
 # --- Azure SQL Connection using environment variables ---
-server = os.environ['AZURE_SQL_SERVER']
-database = os.environ['AZURE_SQL_DATABASE']
+server = os.environ['AZURE_SQL_SERVER']       # e.g., assignment8.database.windows.net
+database = os.environ['AZURE_SQL_DATABASE']   # e.g., assignment_8
 username = os.environ['AZURE_SQL_USER']
 password = os.environ['AZURE_SQL_PASSWORD']
 
-conn_str = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+# Proper ODBC connection string for Linux
+params = urllib.parse.quote_plus(
+    f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+    f"SERVER={server};DATABASE={database};UID={username};PWD={password}"
+)
+conn_str = f"mssql+pyodbc:///?odbc_connect={params}"
+
 engine = create_engine(conn_str)
 
 # --- Load CSVs into SQL tables ---
